@@ -52,7 +52,7 @@ Kết quả: đánh giá predictions.txt do model tạo ra và VNTraffic_GroundT
     )
 ```
 ### 3. Chạy qua từng frame video
-`results = model(frame)[0]`
+`results = model(frame, conf=0.15)[0]`
 ### 4. Chuyển YOLO → DeepSORT
 `detections_for_tracker.append([[x1, y1, w, h], conf, cls])`
 ### 5. DeepSORT cập nhật track
