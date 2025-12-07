@@ -75,31 +75,86 @@ Model phát hiện các đối tượng rất tốt, rất chính xác khi chỉ
 
 
 ![Validation_batch0_labels](runs/detect/val2/val_batch0_labels.jpg)
-Kiểm tra khả năng nhận diện các class từ 0 đến 3 với batch 0
+Kiểm tra khả năng nhận diện các class từ 0 đến 3 với 2 ảnh bất kì
 
 
 ![Validation_batch0_pred](runs/detect/val2/val_batch0_pred.jpg)
-Kiểm tra khả năng dự đoán với batch 0
-
-
-![Validation_batch1_labels](runs/detect/val2/val_batch1_labels.jpg)
-Kiểm tra khả năng nhận diện các class từ 0 đến 3 với batch 1
-
-
-![Validation_batch1_pred](runs/detect/val2/val_batch1_pred.jpg)
-Kiểm tra khả năng dự đoán với batch 1
+Kiểm tra khả năng dự đoán với 2 ảnh bất kì
 
 
 ### 3. Chạy thử với ảnh đơn lẻ
 - Lệnh: ` python test_model.py`
 
-### 4. Chạy thử với video khác được cung cấp
+### 4. Chạy thử với video khác
 - Lệnh: ` python track_yolov8_deepsort.py` 
 - Kết quả: cửa sổ hiển thị video tracking real-time, file output_tracking.mp4 được tạo tự động và lưu các predictions thành file .txt để sử dụng cho đánh giá model
 
-### 5. Đánh giá thêm model với video khác được cung cấp
+### 5. Đánh giá thêm model với video khác
 - Lệnh: ` python evaluate.py` 
 - Kết quả: đánh giá predictions.txt do model tạo ra và VNTraffic_GroundTruth.txt do giảng viên cung cấp
+![Evaluate](evaluate.png)
+Đánh giá cho thấy:
+-   Số lượng frame trong video được chia thành 510
+-   Chỉ số MOTA = -0.075 cho thấy khi tracking sẽ mất nhiều xe track sẽ sai nhiều ID,...
+-   MOTP = 0.29 bbox dự đoán khá khớp, YOLO xác định bbox ổn nhưng traking object kém
+-   IDF1 = 0.446679 (~44%) nghĩa là gần 1 nửa đối tượng có thể bị track sai ID
+-   Precision = 0.472 (~47%) nghĩa là YOLO tạo ra nhiều false positive, detect nhiều vật thể nhưng vẫn có thể bị sai
+-   Recall = 0.590 (~59%) nghĩa là YOLO phát hiện được 59% trong tất cả object thật
+
+## 📌 Kết luận
+
+Kết quả đánh giá cho thấy mô hình **YOLOv8 kết hợp DeepSORT** có khả năng phát hiện phương tiện tương đối tốt trên tập dữ liệu validation ban đầu.  
+Các chỉ số như **Precision, Recall, mAP**, cùng các biểu đồ **PR Curve, F1 Curve** đều chỉ ra rằng mô hình đã học được những đặc trưng quan trọng của phương tiện trong môi trường giao thông.
+
+Tuy nhiên, khi áp dụng mô hình vào **video thực nghiệm nằm ngoài tập dữ liệu validation**, hiệu suất giảm đáng kể. Nguyên nhân đến từ một số vấn đề chính:
+
+### ⚠️ Nguyên nhân giảm hiệu suất
+- **Tập dữ liệu huấn luyện chưa đủ lớn và chưa đa dạng**, đặc biệt là về:
+  - Góc quay camera  
+  - Mật độ giao thông  
+  - Điều kiện ánh sáng  
+  - Độ che khuất  
+  - Sự khác biệt giữa camera của video đánh giá và camera của dataset huấn luyện
+
+- **Sai số trong phát hiện (Detection Error)**:
+  - Bỏ sót phương tiện (False Negative)  
+  - Nhận nhầm vật thể (False Positive)
+
+- **DeepSORT phụ thuộc hoàn toàn vào chất lượng bounding box từ YOLO**.  
+  Khi YOLO dự đoán sai, tracker dễ bị:
+  - Mất ID  
+  - Gán nhầm ID  
+
+- **Mật độ phương tiện cao** trong video thực nghiệm làm tăng số lượng va chạm giữa bounding box → tăng ID switch → giảm MOTA.
+
+---
+
+### ✅ Khả năng đáp ứng của mô hình
+Mặc dù gặp nhiều hạn chế ở dữ liệu ngoài phân phối, mô hình hiện tại vẫn:
+- Dự đoán vị trí phương tiện khá ổn định  
+- Theo dõi mục tiêu xuyên suốt phần lớn thời gian  
+- **Đáp ứng yêu cầu cơ bản của bài toán Vehicle Tracking**
+
+Điều này cho phép mô hình sử dụng cho các nhiệm vụ như:
+- Quan sát giao thông  
+- Đếm phương tiện cơ bản  
+- Thống kê mật độ giao thông mức đơn giản  
+
+---
+
+### 🔧 Hướng cải thiện trong tương lai
+Để mô hình ổn định hơn trong thực tế, có thể xem xét:
+
+- **Mở rộng và đa dạng hóa dataset**:
+  - Thêm nhiều góc quay, thời tiết, ban ngày/ban đêm  
+  - Thêm tình huống giao thông đông đúc, che khuất  
+
+- **Tăng số lượng epoch hoặc dùng phiên bản YOLO lớn hơn** (YOLOv8m, YOLOv8l,...)
+
+- **Tinh chỉnh hoặc thay thế thuật toán tracking** bằng các phương pháp hiện đại hơn:
+  - **OC-SORT**
+  - **ByteTrack**
+  - **BoT-SORT**
 
 ## 📜 Giải thích code chính (track_yolov8_deepsort.py)
 ### 1. Load YOLO
