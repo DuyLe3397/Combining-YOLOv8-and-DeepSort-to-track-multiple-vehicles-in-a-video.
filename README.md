@@ -32,13 +32,25 @@ pip install opencv-python
 ```
 ### 2. Chạy file tracking
 Lệnh: ` python track_yolov8_deepsort.py` 
-Kết quả: cửa sổ hiển thị video tracking real-time và file output_tracking.mp4 được tạo tự động
+Kết quả: cửa sổ hiển thị video tracking real-time, file output_tracking.mp4 được tạo tự động và lưu các predictions thành file .txt để sử dụng cho đánh giá model
 
+### 2. Chạy file evaluate
+Lệnh: ` python evaluate.py` 
+Kết quả: đánh giá predictions.txt do model tạo ra và VNTraffic_GroundTruth.txt do giảng viên cung cấp
 ## 📜 Giải thích code chính (track_yolov8_deepsort.py)
 ### 1. Load YOLO
 `model = YOLO("best_85epochs.pt")`
 ### 2. Khởi tạo DeepSORT
-`tracker = DeepSort(max_age=30, nn_budget=100)`
+```
+ tracker = DeepSort(
+        max_age=40,
+        n_init=3,
+        nn_budget=200,
+        max_cosine_distance=0.4,
+        max_iou_distance=0.7,
+        nms_max_overlap=0.6
+    )
+```
 ### 3. Chạy qua từng frame video
 `results = model(frame)[0]`
 ### 4. Chuyển YOLO → DeepSORT
