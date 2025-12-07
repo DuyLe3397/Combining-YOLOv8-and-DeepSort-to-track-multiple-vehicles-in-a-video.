@@ -54,32 +54,42 @@ pip install opencv-python
 - Kết quả đánh giá của model như sau:
 ![F1](runs/detect/val2/BoxF1_curve.png)
 Tức là conf = 0.428 là giá trị tối ưu giúp model cân bằng tốt nhất giữa: precision (độ chính xác) và recall (độ bao phủ)
+---
 
 ![Precision](runs/detect/val2/BoxP_curve.png)
 Khi đặt conf = 0.965 model sẽ dự đoán rất chính xác (precision cao) nhưng bỏ sót hàng loạt xe (recall thấp)
+---
 
 ![Recall](runs/detect/val2/BoxR_curve.png)
 Tức là YOLO phát hiện gần toàn bộ đối tượng khi không lọc gì cả
+---
 
 ![Precision-Recall](runs/detect/val2/BoxPR_curve.png)
 Đây là giá trị Mean Average Precision tại ngưỡng IoU = 0.5, kết quả 0.946 ~ 94.6% là RẤT CAO.
 Model phát hiện các đối tượng rất tốt, rất chính xác khi chỉ yêu cầu IoU ≥ 0.5
+---
 
 ![Confusion_matrix_normalized](runs/detect/val2/confusion_matrix_normalized.png)
+---
 
 ![Confusion_matrix](runs/detect/val2/confusion_matrix.png)
+---
 
 ![Validation_batch0_labels](runs/detect/val2/val_batch0_labels.jpg)
+Kiểm tra khả năng nhận diện các class từ 0 đến 3 với batch 0
+---
 
 ![Validation_batch0_pred](runs/detect/val2/val_batch0_pred.jpg)
+Kiểm tra khả năng dự đoán với batch 0
+---
 
 ![Validation_batch1_labels](runs/detect/val2/val_batch1_labels.jpg)
+Kiểm tra khả năng nhận diện các class từ 0 đến 3 với batch 1
+---
 
 ![Validation_batch1_pred](runs/detect/val2/val_batch1_pred.jpg)
-
-![Validation_batch2_labels](runs/detect/val2/val_batch2_labels.jpg)
-
-![Validation_batch2_pred](runs/detect/val2/val_batch2_pred.jpg)
+Kiểm tra khả năng dự đoán với batch 1
+---
 
 ### 3. Chạy thử với ảnh đơn lẻ
 - Lệnh: ` python test_model.py`
