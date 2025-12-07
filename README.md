@@ -5,8 +5,7 @@ Mô hình YOLOv8 được huấn luyện để nhận diện 4 loại phương t
 - Class ID: 0, nhãn: Motobike
 - Class ID: 1, nhãn: Car
 - Class ID: 2, nhãn: Bus
-- Class ID: 3, nhãn: Truck
-Sau khi phát hiện, các bounding box được đưa vào DeepSORT để gán ID và theo dõi đối tượng xuyên suốt video.
+- Class ID: 3, nhãn: Truck. Sau khi phát hiện, các bounding box được đưa vào DeepSORT để gán ID và theo dõi đối tượng xuyên suốt video.
 
 ## 🧠 Mô tả kỹ thuật
 ### 1. Phát hiện (Detection) – YOLOv8
@@ -23,8 +22,7 @@ Mỗi class có 1 màu cố định:
 -   Xe máy	(255, 0, 0) – xanh dương
 -   Xe con	(0, 0, 255) – đỏ
 -   Xe buýt	(0, 255, 255) – vàng
--   Xe tải	(255, 0, 255) – tím
-Hiển thị trên video, dạng: `ID 12 | C0` . Trong đó ID 12 là Track ID cho DeepSORT sinh ra, C0 là class xe máy
+-   Xe tải	(255, 0, 255) – tím. Hiển thị trên video, dạng: `ID 12 | C0` . Trong đó ID 12 là Track ID cho DeepSORT sinh ra, C0 là class xe máy
 ## ▶️ Cách chạy tracking YOLOv8 + DeepSORT
 ### 1. Cài đặt thư viện
 ``` 
