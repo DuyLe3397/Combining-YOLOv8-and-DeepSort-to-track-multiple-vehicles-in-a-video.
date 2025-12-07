@@ -6,7 +6,24 @@ Mô hình YOLOv8 được huấn luyện để nhận diện 4 loại phương t
 - Class ID: 1, nhãn: Car
 - Class ID: 2, nhãn: Bus
 - Class ID: 3, nhãn: Truck. Sau khi phát hiện, các bounding box được đưa vào DeepSORT để gán ID và theo dõi đối tượng xuyên suốt video.
+## 📊 Dataset
+Dữ liệu dùng để train model được tải về từ Roboflow khi chạy `python train_model.py`, tại dòng code:
+```
+    # ============================
+    # 1. TẢI DATASET TỪ ROBOFLOW
+    # ============================
+    rf = Roboflow(api_key="d6Ftxh41wdgfXKN8QeoO")
+    project = rf.workspace("duy-6d40k").project("cacacacaca-smvlx")
+    version = project.version(3)
 
+    print("Đang tải dataset từ Roboflow...")
+    # dataset.location là đường dẫn dataset
+    dataset = version.download("yolov8")
+
+    data_yaml = os.path.join(dataset.location, "data.yaml")
+    if not os.path.exists(data_yaml):
+        raise FileNotFoundError("Không tìm thấy file data.yaml trong dataset!")
+```
 ## 🧠 Mô tả kỹ thuật
 ### 1. Phát hiện (Detection) – YOLOv8
 YOLOv8 dự đoán cho mỗi đối tượng:
