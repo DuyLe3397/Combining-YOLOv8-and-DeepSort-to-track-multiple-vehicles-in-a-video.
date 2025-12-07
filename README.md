@@ -69,17 +69,17 @@ Model phát hiện các đối tượng rất tốt, rất chính xác khi chỉ
 
 ![Confusion_matrix](runs/detect/val2/confusion_matrix.png)
 
-![Validation_batch0_labels](runs/detect/val2/val_batch0_labels.png)
+![Validation_batch0_labels](runs/detect/val2/val_batch0_labels.jpg)
 
-![Validation_batch0_pred](runs/detect/val2/val_batch0_pred.png)
+![Validation_batch0_pred](runs/detect/val2/val_batch0_pred.jpg)
 
-![Validation_batch1_labels](runs/detect/val2/val_batch1_labels.png)
+![Validation_batch1_labels](runs/detect/val2/val_batch1_labels.jpg)
 
-![Validation_batch1_pred](runs/detect/val2/val_batch1_pred.png)
+![Validation_batch1_pred](runs/detect/val2/val_batch1_pred.jpg)
 
-![Validation_batch2_labels](runs/detect/val2/val_batch2_labels.png)
+![Validation_batch2_labels](runs/detect/val2/val_batch2_labels.jpg)
 
-![Validation_batch2_pred](runs/detect/val2/val_batch2_pred.png)
+![Validation_batch2_pred](runs/detect/val2/val_batch2_pred.jpg)
 
 ### 3. Chạy thử với ảnh đơn lẻ
 - Lệnh: ` python test_model.py`
